@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pasm/pages/loginpage.dart';
+import 'package:pasm/pages/homepage.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -10,9 +11,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      home: LoginPage(
-        onSignIn: () => print('hello'),
-      ),
+      home: LoginPage(),
     );
   }
 }

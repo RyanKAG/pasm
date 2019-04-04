@@ -4,14 +4,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-
+import 'package:pasm/pages/homepage.dart';
 class LoginPage extends StatefulWidget {
-  final VoidCallback _onSignIn;
   User _user;
-
-  LoginPage({@required onSignIn})
-      : assert(onSignIn != null),
-        _onSignIn = onSignIn;
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -51,7 +46,6 @@ class _LoginPageState extends State<LoginPage> {
     if (password.length < 8) {
       return 'Password must be at least 8 characters';
     }
-
     if (_isInvalidAsyncPass) {
       // disable message until after next async call
       _isInvalidAsyncPass = false;
@@ -108,7 +102,8 @@ class _LoginPageState extends State<LoginPage> {
         });
         if (_isLoggedIn)
           // do something
-          widget._onSignIn();
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => Homepage(widget._user)));
       });
     }
   }
@@ -148,7 +143,7 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.only(top: 100),
               child: CircleAvatar(
                 backgroundColor: Colors.transparent,
-                radius: 99,
+                radius: 70,
                 child: Image.asset('images/logo.png'),
               )),
           Padding(
@@ -156,7 +151,10 @@ class _LoginPageState extends State<LoginPage> {
             child: TextFormField(
               key: Key('username'),
               decoration: InputDecoration(
-                  hintText: 'enter username', labelText: 'User Name'),
+                  hintText: 'Enter username',
+                  labelText: 'Username',
+                  prefixIcon: Icon(Icons.person,
+                      color: Color.fromRGBO(0, 129, 150, 100))),
               style: TextStyle(fontSize: 16.0, color: textTheme.button.color),
               validator: _validateUserName,
               onSaved: (value) => _username = value,
@@ -168,7 +166,10 @@ class _LoginPageState extends State<LoginPage> {
               key: Key('password'),
               obscureText: true,
               decoration: InputDecoration(
-                  hintText: 'enter password', labelText: 'Password'),
+                  hintText: 'enter password',
+                  labelText: 'Password',
+                  prefixIcon: Icon(Icons.vpn_key,
+                      color: Color.fromRGBO(0, 129, 150, 100))),
               style: TextStyle(fontSize: 16.0, color: textTheme.button.color),
               validator: _validatePassword,
               onSaved: (value) => _password = value,

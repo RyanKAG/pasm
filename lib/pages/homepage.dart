@@ -3,7 +3,10 @@ import 'package:pasm/components/appointment.dart';
 import 'package:pasm/entities/user.dart';
 
 class Homepage extends StatefulWidget {
-  User user;
+  User _user;
+
+  Homepage(this._user);
+
   @override
   _HomepageState createState() => _HomepageState();
 }
@@ -24,7 +27,7 @@ class _HomepageState extends State<Homepage> {
         ),
       ),
       body: ListView(
-        children: <Widget>[AppointmentCard(),AppointmentCard(),AppointmentCard(),AppointmentCard(),],
+        children: <Widget>[AppointmentCard()],
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: getBottomNavBar(),
