@@ -1,4 +1,4 @@
-class User{
+class User {
   final int _id;
   String _username;
   final String _fname;
@@ -11,7 +11,7 @@ class User{
   User(this._id, this._username, this._fname, this._lname, this._email,
       this._regDat, this._typeId, this._statusId);
 
-  factory User.fromJson(Map<String, dynamic> json){
+  factory User.fromJson(Map<String, dynamic> json) {
     return User(
       json["id"],
       json['username'],
@@ -24,10 +24,9 @@ class User{
     );
   }
 
-  String getFullName(){
-    return this._fname+" "+this._lname;
+  String getFullName() {
+    return this._fname + " " + this._lname;
   }
-
 
   int get statusId => _statusId;
 
@@ -44,6 +43,4 @@ class User{
   String get username => _username;
 
   int get id => _id;
-
-
 }

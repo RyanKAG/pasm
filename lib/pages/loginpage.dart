@@ -4,7 +4,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
-import 'package:pasm/pages/homepage.dart';
+import 'package:pasm/pages/user-homepage.dart';
+import 'package:pasm/helpers/api.dart';
+import 'receptionist.dart';
 class LoginPage extends StatefulWidget {
   User _user;
 
@@ -15,7 +17,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   // maintains validators and state of form fields
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
-
   // manage state of modal progress HUD widget
   bool _isInAsyncCall = false;
 
@@ -57,12 +58,11 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<int> login() async {
     return http
-        .post('http://192.168.43.99:81/ICS-324-RESTful-API/users/login.php',
+        .post(Api.getUrl('users/login.php'),
         body: json.encode({'UserName': _username, 'password': _password}))
         .then((response) {
       if (response.statusCode == 200)
         widget._user = User.fromJson(json.decode(response.body));
-      print(widget._user.fname);
       return response.statusCode;
     });
   }
@@ -103,13 +103,17 @@ class _LoginPageState extends State<LoginPage> {
         if (_isLoggedIn)
           // do something
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => Homepage(widget._user)));
+              builder: (BuildContext context) =>
+              widget._user.typeId == 4
+                  ? UserHomepage(widget._user)
+                  : ReceptionistHomepage(widget._user)));
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    print("in build login");
     return GestureDetector(
       onTap: () => FocusScope.of(context).requestFocus(new FocusNode()),
       child: Scaffold(
