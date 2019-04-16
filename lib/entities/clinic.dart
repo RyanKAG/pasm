@@ -21,8 +21,7 @@ class ClinicList {
   Clinic getClinicWithDentistId(int id) {
     for (int i = 0; i < _clinics.length; i++)
       for (int j = 0; j < _clinics[i].dentists.length; j++)
-        if (_clinics[i].dentists[j].id == id)
-          return _clinics[i];
+        if (_clinics[i].dentists[j].id == id) return _clinics[i];
 
     return null;
   }
@@ -32,13 +31,16 @@ class Clinic {
   int id;
   List<Dentist> dentists;
   List<String> services;
-  double rating;
+  String rating;
   String name;
   String website;
   String email;
   String status;
+  String location;
 
   Clinic({this.id,
+    this.rating,
+    this.location,
     this.name,
     this.dentists,
     this.services,
@@ -54,7 +56,9 @@ class Clinic {
     return Clinic(
         id: json['id'],
         name: json['name'],
+        location: json['location'],
         dentists: dentistList,
+        rating: json['rating'],
         services: json['services'].toString().split('-'),
         website: json['website'],
         email: json['email'],

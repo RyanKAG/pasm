@@ -7,6 +7,7 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:pasm/pages/user-homepage.dart';
 import 'package:pasm/helpers/api.dart';
 import 'receptionist.dart';
+import 'package:pasm/pages/browsepage.dart';
 import 'package:pasm/pages/register.dart';
 
 class LoginPage extends StatefulWidget {
@@ -200,6 +201,16 @@ class _LoginPageState extends State<LoginPage> {
                   Navigator.push(
                       context, MaterialPageRoute(builder: (ctx) => Register())),
               child: Text('Register', style: TextStyle(fontSize: 20)),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: InkWell(
+              onTap: () =>
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (ctx) => BrowsePage())),
+              child: Text('BROWSE', style: TextStyle(fontSize: 20)),
             ),
           ),
         ],
