@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pasm/components/appointmentCard.dart';
+import 'package:pasm/components/apmCardRec.dart';
 import 'package:pasm/entities/clinic.dart';
 import 'package:pasm/entities/user.dart';
-import 'package:http/http.dart' as http;
-import 'dart:async';
-import 'dart:convert';
-import 'package:pasm/helpers/api.dart';
-import 'package:pasm/pages/apm-createpage.dart';
 
 class ReceptionistHomepage extends StatefulWidget {
   final User _user;
@@ -24,8 +19,10 @@ class _ReceptionistHomepageState extends State<ReceptionistHomepage> {
 
   @override
   void initState() {
-//    pages = [unconfirmedApm, confirmedApms, Container()];
-//    curretPage = unconfirmedApm;
+    var unconfirmedApm = AppointmentCardList(apmStatus: 4, user: widget._user);
+    var confirmedApms = AppointmentCardList(apmStatus: 5, user: widget._user);
+    pages = [unconfirmedApm, confirmedApms, Container()];
+    curretPage = unconfirmedApm;
     super.initState();
   }
 
@@ -42,11 +39,6 @@ class _ReceptionistHomepageState extends State<ReceptionistHomepage> {
         ),
       ),
       body: curretPage,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.push(context,
-            MaterialPageRoute(builder: (ctx) => CreateApmPage(widget._user))),
-        child: Icon(Icons.add, size: 36),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         items: getBottomNavBar(),
         currentIndex: _selectedIndex,

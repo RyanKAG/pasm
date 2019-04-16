@@ -7,6 +7,8 @@ import 'package:modal_progress_hud/modal_progress_hud.dart';
 import 'package:pasm/pages/user-homepage.dart';
 import 'package:pasm/helpers/api.dart';
 import 'receptionist.dart';
+import 'package:pasm/pages/register.dart';
+
 class LoginPage extends StatefulWidget {
   User _user;
 
@@ -17,6 +19,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   // maintains validators and state of form fields
   final GlobalKey<FormState> _loginFormKey = GlobalKey<FormState>();
+
   // manage state of modal progress HUD widget
   bool _isInAsyncCall = false;
 
@@ -29,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
 
   // validate user name
   String _validateUserName(String userName) {
-    if (userName.length < 8) {
+    if (userName.length < 6) {
       return 'Username must be at least 8 characters';
     }
 
@@ -44,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
 
   // validate password
   String _validatePassword(String password) {
-    if (password.length < 8) {
+    if (password.length < 6) {
       return 'Password must be at least 8 characters';
     }
     if (_isInvalidAsyncPass) {
@@ -185,6 +188,15 @@ class _LoginPageState extends State<LoginPage> {
               color: Color.fromRGBO(0, 129, 150, 100),
               onPressed: _submit,
               child: Text('Login', style: TextStyle(fontSize: 16)),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: InkWell(
+              onTap: () =>
+                  Navigator.push(
+                      context, MaterialPageRoute(builder: (ctx) => Register())),
+              child: Text('Register', style: TextStyle(fontSize: 20)),
             ),
           ),
         ],

@@ -28,6 +28,7 @@ class Appointment {
 
   Appointment(
       {this.id,
+        this.dentistId,
       this.patient,
       this.dentist,
       this.date,
@@ -38,6 +39,7 @@ class Appointment {
   factory Appointment.fromJson(Map<String, dynamic> json) {
     return Appointment(
         id: json['id'],
+        dentistId: json['dentistId'],
         patient: json['patient'],
         dentist: json['dentist'],
         date: json['date'],

@@ -3,13 +3,15 @@ import 'dart:convert';
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:pasm/entities/appointment.dart';
+import 'package:pasm/entities/user.dart';
 import 'package:pasm/helpers/api.dart';
+import 'package:pasm/pages/apmeditpage.dart';
 
 class AppointmentCardList extends StatefulWidget {
-  final int patientID;
   final int apmStatus;
+  final User user;
 
-  AppointmentCardList({@required this.patientID, this.apmStatus});
+  AppointmentCardList({@required this.apmStatus, this.user});
 
   @override
   _AppointmentCardListState createState() => _AppointmentCardListState();
@@ -29,12 +31,14 @@ class _AppointmentCardListState extends State<AppointmentCardList> {
                     itemCount: sp.data.appointments.length,
                     itemBuilder: (BuildContext ctx, int i) {
                       final card = sp.data.appointments[i];
+                      print(card.dentistId);
                       return Dismissible(
                         key: Key(card.id.toString()),
-                        child: AppointmentCard(sp.data.appointments[i]),
-                        background: Container(color: Colors.red),
+                        child: AppointmentCard(
+                            sp.data.appointments[i], widget.user),
+                        background: Container(color: Colors.green),
                         onDismissed: (direction) {
-                          delete(card.id);
+                          confirmApm(card.id, 5);
                         },
                       );
                     });
@@ -43,13 +47,8 @@ class _AppointmentCardListState extends State<AppointmentCardList> {
   }
 
   Future<AppointmentList> getAppointments() async {
-    int id = widget.patientID;
     int sid = widget.apmStatus;
-    String endpoint;
-
-    sid == null
-        ? endpoint = 'readAll.php?id=$id'
-        : endpoint = 'readStatus.php?id=$id&sid=$sid';
+    String endpoint = 'readOneStatus.php?sid=$sid';
 
     endpoint = 'appointment/' + endpoint;
 
@@ -66,18 +65,22 @@ class _AppointmentCardListState extends State<AppointmentCardList> {
     getAppointments();
   }
 
-  void delete(int i) async {
-    var response = await http.get(
-        'http://192.168.43.99:81/ICS-324-RESTful-API/appointment/delete.php?id=' +
-            i.toString());
+  void confirmApm(int apmId, int status) async {
+    var response = await http.get(Api.getUrl('/appointment/confirm.php?id=') +
+        apmId.toString() +
+        "&sid=" +
+        status.toString() +
+        "&rid=" +
+        widget.user.id.toString());
     print(response.statusCode);
   }
 }
 
 class AppointmentCard extends StatefulWidget {
   final Appointment _appointment;
+  final User _user;
 
-  AppointmentCard(this._appointment);
+  AppointmentCard(this._appointment, this._user);
 
   @override
   _AppointmentState createState() => _AppointmentState();
@@ -93,6 +96,21 @@ class _AppointmentState extends State<AppointmentCard> {
     return Card(
       child: new Column(
         children: <Widget>[
+          ListTile(
+              leading: IconButton(
+                  icon: Icon(
+                    Icons.edit,
+                    color: Colors.orange,
+                  ),
+                  onPressed: () =>
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (ctx) =>
+                                  ApmEditPage(
+                                    apm: widget._appointment,
+                                    user: widget._user,
+                                  ))))),
           getTile(widget._appointment.dentist, widget._appointment.specialty,
               new Icon(Icons.person, color: Colors.blue, size: 26.0)),
           new Divider(
@@ -124,8 +142,8 @@ class _AppointmentState extends State<AppointmentCard> {
                       color: widget._appointment.status == 'Canceled'
                           ? Colors.red
                           : widget._appointment.status == 'unconfirmed'
-                              ? Colors.orange
-                              : Colors.green),
+                          ? Colors.orange
+                          : Colors.green),
                 )
               ],
             ),
@@ -144,11 +162,5 @@ class _AppointmentState extends State<AppointmentCard> {
       ),
       subtitle: new Text(subtitle),
     );
-  }
-
-  Future<String> getData() async {
-    var response = await http.get(
-        'http://192.168.43.99/ICS-324-RESTful-API/advertisement/read.php',
-        headers: {"Accept": 'application/json'});
   }
 }
