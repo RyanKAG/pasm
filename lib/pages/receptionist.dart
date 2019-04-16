@@ -34,8 +34,8 @@ class _ReceptionistHomepageState extends State<ReceptionistHomepage> {
         backgroundColor: Colors.lightBlue.shade400,
         title: Text('Appointment'),
         leading: IconButton(
-          icon: Icon(Icons.person),
-          onPressed: () {},
+          icon: Icon(Icons.exit_to_app),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: curretPage,

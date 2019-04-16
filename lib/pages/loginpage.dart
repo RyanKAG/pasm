@@ -103,13 +103,16 @@ class _LoginPageState extends State<LoginPage> {
           // stop the modal progress HUD
           _isInAsyncCall = false;
         });
-        if (_isLoggedIn)
-          // do something
+        if (_isLoggedIn && widget._user.typeId == 4 || widget._user.typeId == 5)
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) =>
-              widget._user.typeId == 4
-                  ? UserHomepage(widget._user)
-                  : ReceptionistHomepage(widget._user)));
+              builder: (BuildContext context) {
+                if (widget._user.typeId == 4) {
+                  return UserHomepage(widget._user);
+                } else if (widget._user.typeId == 5)
+                  return ReceptionistHomepage(widget._user);
+              }));
+        else
+          _isLoggedIn = false;
       });
     }
   }

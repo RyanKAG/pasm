@@ -100,6 +100,7 @@ class _AppointmentState extends State<AppointmentCard> {
               leading: IconButton(
                   icon: Icon(
                     Icons.edit,
+                    size: 22,
                     color: Colors.orange,
                   ),
                   onPressed: () =>
@@ -117,6 +118,7 @@ class _AppointmentState extends State<AppointmentCard> {
             color: Colors.blue,
             indent: 16.0,
           ),
+          getTile(widget._appointment.patient, "", Icon(Icons.perm_identity)),
           getTile(
               widget._appointment.apmType,
               "",
