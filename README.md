@@ -23,14 +23,14 @@ This application is a simple CRUD app that handles appointments, clinics, etc..
 - Adding/removing clinics
 - handling 
 
-## Techonology used:
+## Techonology used
 
 ### Frontend
-#### FLUTTER
-#### DART
+- FLUTTER
+- DART
 
 ### Backend
-#### PHP (vanilla)
-#### MySQL
-#### RESTful API
+- PHP (vanilla)
+- MySQL
+- RESTful API
 
